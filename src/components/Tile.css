@@ -1,0 +1,42 @@
+.tile {
+    width: 115px;
+    height: 115px;
+    position: relative;
+    font-size: 70px;
+    perspective: 1000px;
+    user-select: none;
+    cursor: pointer;
+}
+.tile__inner {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transition: .5s;
+    border: 1px solid black;
+    border-radius: 8px;
+    transform-style: preserve-3d;
+}
+.tile__front {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform: rotateY(180deg);
+    backface-visibility: hidden;
+    border-radius: 8px;
+}
+.tile__back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backface-visibility: hidden;
+    border-radius: 8px;
+}
+.is-open {
+    transform: rotateY(180deg);
+}
+.is-find {
+    transform: rotateY(180deg);
+}

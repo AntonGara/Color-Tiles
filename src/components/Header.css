@@ -1,0 +1,14 @@
+.header__title {
+    margin: 0;
+    font-size: 60px;
+}
+.header__rounds {
+    margin: 0;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+}
+.header__value {
+    width: 20px;
+    margin-left: 10px;
+}

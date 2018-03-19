@@ -1,0 +1,40 @@
+.winScreen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation: in .7s ease;
+}
+.winScreen__title {
+    font-size: 40px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+.winScreen__description {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+.winScreen__restartBtn {
+    font-size: 30px;
+    line-height: 25px;
+    border: 2px solid;
+    border-radius: 10px;
+    padding: 5px;
+    cursor: pointer;
+    transition: .2s;
+}
+.winScreen__restartBtn:hover {
+    background-color: black;
+    color: #fff;
+}
+
+@keyframes in {
+    from {
+        transform: scale(.5);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

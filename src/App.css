@@ -1,0 +1,11 @@
+.App {
+  width: 100wp;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 700px;
+  min-width: 550px;
+}
+
