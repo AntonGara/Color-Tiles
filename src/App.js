@@ -38,13 +38,17 @@ class App extends Component {
     onTransitionEnd = () => {
         this.setState({ readyToOpenNextTile: true })
         if (this.state.activeTiles.length >= 2) {
-            if (this.state.activeTiles[0].firstChild.style.backgroundColor === this.state.activeTiles[1].firstChild.style.backgroundColor) {
-                this.state.activeTiles[0].classList.add('is-find')
-                this.state.activeTiles[1].classList.add('is-find')
+            const firstTile = this.state.activeTiles[0]
+            const secondTile = this.state.activeTiles[1]
+            const firstTileColor = this.state.activeTiles[0].firstChild.style.backgroundColor
+            const secondTileColor = this.state.activeTiles[1].firstChild.style.backgroundColor
+            if (firstTileColor === secondTileColor) {
+                firstTile.classList.add('is-find')
+                secondTile.classList.add('is-find')
                 this.setState({ matches: this.state.matches + 1 })
             } 
-            this.state.activeTiles[0].classList.remove('is-open')
-            this.state.activeTiles[1].classList.remove('is-open')
+            firstTile.classList.remove('is-open')
+            secondTile.classList.remove('is-open')
             this.setState ({ rounds: this.state.rounds + 1, activeTiles: [] }) 
         }
     }
