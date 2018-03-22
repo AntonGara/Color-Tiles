@@ -19,15 +19,21 @@ class App extends Component {
     }
 
     componentWillMount () {
+        this.start()
+    }
+    
+    start = () => {
         colors.sort(compareRandom);
         const tiles = colors.map(function(color, index) {return <Tile key={index} color={color}/>;});
-        this.setState({ tiles: tiles })
+        this.setState({ 
+            rounds: 0,
+            matches: 0,
+            tiles: tiles })
     }
 
-    openTile = event => {
-        const targetTile = event.target.closest('.tile__inner')
-        if (!targetTile || targetTile.classList.contains('is-open')) return
-        if (!targetTile || targetTile.classList.contains('is-find')) return
+    openTile = (e) => {
+        const targetTile = e.target.closest('.tile__inner')
+        if (!targetTile || (targetTile.classList.contains('is-open')) || targetTile.classList.contains('is-find')) return
         targetTile.classList.add('is-open')
         this.setState({ 
             activeTiles: [...this.state.activeTiles, targetTile],
@@ -37,7 +43,7 @@ class App extends Component {
 
     onTransitionEnd = () => {
         this.setState({ readyToOpenNextTile: true })
-        if (this.state.activeTiles.length >= 2) {
+        if (this.state.activeTiles.length === 2) {
             const firstTile = this.state.activeTiles[0]
             const secondTile = this.state.activeTiles[1]
             const firstTileColor = this.state.activeTiles[0].firstChild.style.backgroundColor
@@ -46,23 +52,17 @@ class App extends Component {
                 firstTile.classList.add('is-find')
                 secondTile.classList.add('is-find')
                 this.setState({ matches: this.state.matches + 1 })
-            } 
-            firstTile.classList.remove('is-open')
-            secondTile.classList.remove('is-open')
-            this.setState ({ rounds: this.state.rounds + 1, activeTiles: [] }) 
+            } else {
+                firstTile.classList.remove('is-open')
+                secondTile.classList.remove('is-open')
+                this.setState ({ 
+                    rounds: this.state.rounds + 1, 
+                    activeTiles: [] 
+                }) 
+            }
         }
     }
 
-    restart = () => {
-        colors.sort(compareRandom);
-        const tiles = colors.map(function(color, index) {return <Tile key={index} color={color}/>;});
-        this.setState({
-            tiles: tiles,
-            rounds: 0,
-            matches: 0
-        })
-    }
-  
     render() {
         return (
             <div className="App">
@@ -75,7 +75,7 @@ class App extends Component {
                     onClick={this.openTile} 
                     onTransitionEnd={this.onTransitionEnd} 
                     pointerEvents={this.state.readyToOpenNextTile ? 'auto' : 'none'}
-                    content={ this.state.matches === 8 ? <WinScreen winRound={this.state.rounds} onClick={this.restart}/> : this.state.tiles }
+                    content={ this.state.matches === 8 ? <WinScreen winRound={this.state.rounds} onClick={this.start}/> : this.state.tiles }
                 />
             </div>
         );
