@@ -33,7 +33,7 @@ class App extends Component {
 
     openTile = (e) => {
         const targetTile = e.target.closest('.tile__inner')
-        if (!targetTile || (targetTile.classList.contains('is-open')) || targetTile.classList.contains('is-find')) return
+        if (!targetTile || (targetTile.classList.contains('is-open') || targetTile.classList.contains('is-find'))) return
         targetTile.classList.add('is-open')
         this.setState({ 
             activeTiles: [...this.state.activeTiles, targetTile],
@@ -44,22 +44,23 @@ class App extends Component {
     onTransitionEnd = () => {
         this.setState({ readyToOpenNextTile: true })
         if (this.state.activeTiles.length === 2) {
-            const firstTile = this.state.activeTiles[0]
-            const secondTile = this.state.activeTiles[1]
             const firstTileColor = this.state.activeTiles[0].firstChild.style.backgroundColor
             const secondTileColor = this.state.activeTiles[1].firstChild.style.backgroundColor
             if (firstTileColor === secondTileColor) {
-                firstTile.classList.add('is-find')
-                secondTile.classList.add('is-find')
-                this.setState({ matches: this.state.matches + 1 })
-            } else {
-                firstTile.classList.remove('is-open')
-                secondTile.classList.remove('is-open')
-                this.setState ({ 
-                    rounds: this.state.rounds + 1, 
-                    activeTiles: [] 
-                }) 
+                this.state.activeTiles.forEach(function(item) { 
+                    item.classList.add('is-find') 
+                });
+                this.setState({ 
+                    matches: this.state.matches + 1,
+                })
             }
+            this.state.activeTiles.forEach(function(item) {
+                item.classList.remove('is-open')
+            });
+            this.setState ({ 
+                rounds: this.state.rounds + 1, 
+                activeTiles: [] 
+            }) 
         }
     }
 
