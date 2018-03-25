@@ -3,9 +3,8 @@ import './Tile.css';
 
 
 class Tile extends Component {
-    state = {
-        isOpen: false
-    }
+    
+    state = { isOpen: false }
     
     clickTile = () => {
         if (this.state.isOpen === true) {
@@ -18,9 +17,9 @@ class Tile extends Component {
     }
 
     render () {
-        const tileName = this.state.isOpen ? ' is-open' : ''
+        const tileName = this.state.isOpen ? 'is-open' : ''
         return (
-            <div className={'tile' + tileName} onClick={this.clickTile}>
+            <div className={'tile ' + tileName} onClick={this.clickTile}>
                 <div className='tile__inner'>
                     <div className="tile__front" style={{backgroundColor: this.props.color}}></div>
                     <div className="tile__back">?</div>

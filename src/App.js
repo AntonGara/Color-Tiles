@@ -39,7 +39,7 @@ class App extends Component {
         if (this.state.activeTiles.length === 2) {
             const firstTile = this.state.activeTiles[0]
             const secondTile = this.state.activeTiles[1]
-            if (firstTile.props.id === secondTile.props.id) {
+            if (firstTile.props.color === secondTile.props.color) {
                 this.setState({ matches: this.state.matches + 1})   
             } else {
                 firstTile.state.isOpen = this.setState({ isOpen: false})
@@ -55,9 +55,9 @@ class App extends Component {
     render() {
         let tiles = colors.map((color, index) => {
             return (
-                <Tile key={index} color={color} id={color} clickTile={this.clickTile} />
+                <Tile key={index} color={color} clickTile={this.clickTile} />
             )
-          });
+        });
         
         return (
             <div className="App">
