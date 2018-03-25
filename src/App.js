@@ -7,64 +7,58 @@ import WinScreen from './components/WinScreen';
 
 const colors = ['#f34235','#9b26af','#feea3a','#8ac249','#6639b6','#2095f2','#fe9700','#009587','#f34235','#9b26af','#feea3a','#8ac249','#6639b6','#2095f2','#fe9700','#009587']
 const compareRandom = function () {return Math.random() - 0.5;} 
+const initialState = {
+    rounds: 0,
+    tiles: [],
+    activeTiles: [],
+    readyToOpenNextTile: true,
+    matches: 0
+};
 
 class App extends Component {
-  
-    state = {
-        rounds: 0,
-        activeTiles: [],
-        matches: 0,
-        readyToOpenNextTile: true,
-        tiles: []
-    }
-
+   
     componentWillMount () {
         this.start()
     }
-    
+
     start = () => {
-        colors.sort(compareRandom);
-        const tiles = colors.map(function(color, index) {return <Tile key={index} color={color}/>;});
-        this.setState({ 
-            rounds: 0,
-            matches: 0,
-            tiles: tiles })
+        colors.sort(compareRandom)
+        this.setState(initialState);
     }
 
-    openTile = (e) => {
-        const targetTile = e.target.closest('.tile__inner')
-        if (!targetTile || (targetTile.classList.contains('is-open') || targetTile.classList.contains('is-find'))) return
-        targetTile.classList.add('is-open')
-        this.setState({ 
-            activeTiles: [...this.state.activeTiles, targetTile],
-            readyToOpenNextTile: false 
-        }) 
+    clickTile = (curTile) => {
+        this.setState({
+            counter: this.state.counter + 1,
+            activeTiles: [...this.state.activeTiles, curTile],
+            readyToOpenNextTile: false
+        })
     }
 
-    onTransitionEnd = () => {
+    openTile = () => {
         this.setState({ readyToOpenNextTile: true })
         if (this.state.activeTiles.length === 2) {
-            const firstTileColor = this.state.activeTiles[0].firstChild.style.backgroundColor
-            const secondTileColor = this.state.activeTiles[1].firstChild.style.backgroundColor
-            if (firstTileColor === secondTileColor) {
-                this.state.activeTiles.forEach(function(item) { 
-                    item.classList.add('is-find') 
-                });
-                this.setState({ 
-                    matches: this.state.matches + 1,
-                })
+            const firstTile = this.state.activeTiles[0]
+            const secondTile = this.state.activeTiles[1]
+            if (firstTile.props.id === secondTile.props.id) {
+                this.setState({ matches: this.state.matches + 1})   
+            } else {
+                firstTile.state.isOpen = this.setState({ isOpen: false})
+                secondTile.state.isOpen = this.setState({ isOpen: false})
             }
-            this.state.activeTiles.forEach(function(item) {
-                item.classList.remove('is-open')
-            });
-            this.setState ({ 
-                rounds: this.state.rounds + 1, 
-                activeTiles: [] 
-            }) 
+            this.setState({
+                rounds: this.state.rounds + 1,
+                activeTiles: []
+            })
         }
     }
 
     render() {
+        let tiles = colors.map((color, index) => {
+            return (
+                <Tile key={index} color={color} id={color} clickTile={this.clickTile} />
+            )
+          });
+        
         return (
             <div className="App">
                 <Header 
@@ -73,10 +67,9 @@ class App extends Component {
                     roundsValue={this.state.rounds}
                 />
                 <Board 
-                    onClick={this.openTile} 
-                    onTransitionEnd={this.onTransitionEnd} 
+                    onTransitionEnd={this.openTile} 
                     pointerEvents={this.state.readyToOpenNextTile ? 'auto' : 'none'}
-                    content={ this.state.matches === 8 ? <WinScreen winRound={this.state.rounds} onClick={this.start}/> : this.state.tiles }
+                    content={ this.state.matches === 8 ? <WinScreen winRound={this.state.rounds} onClick={this.start}/> : tiles }
                 />
             </div>
         );
@@ -84,3 +77,4 @@ class App extends Component {
 }
 
 export default App;
+
